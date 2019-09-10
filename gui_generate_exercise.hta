@@ -1,0 +1,137 @@
+<HTA:APPLICATION
+   ID="G²E"
+   APPLICATIONNAME="GUI_GENERATOR_EXO"
+   CAPTION="yes"
+   BORDER=""
+   ICON="favicon.ico"
+   SHOWINTASKBAR="yes"
+   SINGLEINSTANCE="yes"
+   SYSMENU="yes"
+   WINDOWSTATE="yes"
+   SCROLL="no"
+   SCROLLFLAT="no"
+   VERSION="1.0"
+   INNERBORDER="yes"
+   SELECTION="no"
+   MAXIMIZEBUTTON="no"
+   MINIMIZEBUTTON="no"
+   NAVIGABLE="no"
+   CONTEXTMENU="no"
+   BORDERSTYLE="no"
+   WIDTH="200px"
+   HEIGHT="300px">
+   <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>GUI GENERATOR EXO</title>
+        <style>label.priority{margin-bottom:.3em;text-align:left; display:block;width:100%;}input.text{padding:.5em .6em; display:inline-block;border:1px solid grey;height:30px;width:300px;border-radius:4px;vertical-align:middle;box-sizing:border-box;}#step{width:50px;}#submit{background: #ff8d26;border: 5px solid #ff8d26;color:white;font-size:15pt;padding:8px 10px;margin:5px;white-space:normal;}</style>
+    </head>
+    <body>
+        <form>
+            <p>
+                <label class="priority">Les différents énnoncés</label>
+                <input type="checkbox" id="doc_easy" checked="checked" />
+                <label for="doc_easy">Facile</label>
+                
+                <input type="checkbox" id="doc_medium" checked="checked" />
+                <label for="doc_medium">Intermediaire</label>
+
+                <input type="checkbox" id="doc_hard" checked="checked" />
+                <label for="doc_hard">Difficile</label>
+            </p>
+            <p>
+                <label class="priority" for="name">Nom de l'exercice</label>
+                <input type="text" class="text" id="name" />
+            </p>
+            <p>
+                <label class="priority" for="dirname">Nom du répertoire</label>
+                <input type="text" class="text" id="dirname" /><small> (sera stocké dans ./src)</small>
+            </p>
+            <p>
+                <label class="priority" for="step">Nombre d'étape dans l'exercice</label>
+                <input type="text" class="text" id="step" size="2" maxlength="2" value="1" />
+            </p>
+            <p>
+                <label class="priority" for="step">Repository Git (source)</label>
+                <input type="text" class="text" id="git" style="width:460px" value="https://github.com/youpiwaza/boilerplate-exercice" />
+            </p>
+
+            <p style="text-align:center">
+                <button id="submit" onclick="createExo();">Générer l'exercice</button>
+            </p>
+
+
+        </form>
+
+        <hr />
+
+        <p style="text-align:center">
+            <button id="submit" onclick="createDefaultExo();">Regénérer l'exercice par défaut</button>
+        </p>
+
+        <script language="VBScript">
+            Set WshShell = CreateObject("Wscript.Shell")
+
+            Function CreateExo()
+                //WshShell.Run "cmd /c cd src/ &&  git clone https://github.com/youpiwaza/boilerplate-exercice && move boilerplate-exercice youpi-exercice && gulp generate-exercise"
+                WshShell.Run "cmd /c cd src/ &&  git clone https://github.com/youpiwaza/boilerplate-exercice && move boilerplate-exercice "&Document.getElementByID("dirname").Value&" && gulp generate-exercise"
+            End Function
+        </script>
+        <script>
+            var valuesDefault = { docs : "['enonce-easy', 'enonce-medium', 'enonce-hard']", git_repo : 'https://github.com/youpiwaza/boilerplate-exercice', exo_name : 'TEST-table-multiplication', exo_dirname : 'boilerplate-exercice', source : './src/', step : 7};
+            var defaultConfig = "// // Configuration file, may export several configurations\nconst configExoTest = {\n  // .md filenames from which to generate folders\n  // correction will be generated automatically with ExercisePath/docs/correction.md AND git branches 'correction'\n  docs: %docs%,\n  // Exercise git repository uri\n  repoUri: '%git_repo%',\n  // Export name\n  name: '%exo_name%',\n  // Folder name in src/ ; going to work on /src/ExercisePath/src/\n  path: '%exo_dirname%',\n  // Where to clone repo, needs './' prefix\n  src: '%source%',\n  // Number of steps in step-by-step correction, must match ExercisePath/docs AND git branches 'step-*'\n  // Last step will be generated with the correction\n  steps: %step%,\n};\n\n\nmodule.exports = {\n  configExoTest,\n};\n"
+            var current_directory = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('\\'));
+            //var current_directory = G²E.commandLine.substring(0, G²E.commandLine.lastIndexOf('\\'));
+            function init(){window.resizeTo(500,640);window.moveTo(300,150);}
+
+            function generateDefaultContentConfigFile() 
+            {
+                defaultConfig = defaultConfig.replace("%docs%", valuesDefault.docs);
+                defaultConfig = defaultConfig.replace("%git_repo%", valuesDefault.git_repo);
+                defaultConfig = defaultConfig.replace("%exo_name%", valuesDefault.exo_name);
+                defaultConfig = defaultConfig.replace("%exo_dirname%", valuesDefault.exo_dirname);
+                defaultConfig = defaultConfig.replace("%source%", valuesDefault.source);
+                defaultConfig = defaultConfig.replace("%step%",  valuesDefault.step);
+                
+                return defaultConfig;
+            }
+
+            function generateContentConfigFile() 
+            {
+                defaultConfig = defaultConfig.replace("%docs%", valuesDefault.docs);
+                defaultConfig = defaultConfig.replace("%git_repo%", document.getElementById('git').value);
+                defaultConfig = defaultConfig.replace("%exo_name%", document.getElementById('name').value);
+                defaultConfig = defaultConfig.replace("%exo_dirname%", document.getElementById('dirname').value);
+                defaultConfig = defaultConfig.replace("%source%", valuesDefault.source);
+                defaultConfig = defaultConfig.replace("%step%", document.getElementById('step').value);
+                
+                return defaultConfig;
+            }
+
+            function createExo() 
+            {
+                createConfig(generateContentConfigFile());
+                CreateExo();
+            }
+            function createDefaultExo() 
+            {
+                createConfig(generateDefaultContentConfigFile());
+                CreateExo();
+            }
+
+            function createConfig(content) {
+                var fs = new ActiveXObject("Scripting.FileSystemObject");
+                var configFile;
+
+                if( fs.FileExists(current_directory+"\\gulp\\exercise\\config.js") === false) {
+                    fs.CreateTextFile(current_directory+"\\gulp\\exercise\\config.js", true);
+                }
+
+                configFile = fs.OpenTextFile(current_directory+"\\gulp\\exercise\\config.js", 2);
+                configFile.Write(content);
+            }
+            
+            init();
+        </script>
+    </body>
+</html>
