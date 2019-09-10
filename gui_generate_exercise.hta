@@ -30,13 +30,13 @@
         <form>
             <p>
                 <label class="priority">Les différents énnoncés</label>
-                <input type="checkbox" id="doc_easy" checked="checked" />
+                <input type="checkbox" id="doc_easy" checked="checked" disabled />
                 <label for="doc_easy">Facile</label>
                 
-                <input type="checkbox" id="doc_medium" checked="checked" />
+                <input type="checkbox" id="doc_medium" checked="checked" disabled />
                 <label for="doc_medium">Intermediaire</label>
 
-                <input type="checkbox" id="doc_hard" checked="checked" />
+                <input type="checkbox" id="doc_hard" checked="checked" disabled />
                 <label for="doc_hard">Difficile</label>
             </p>
             <p>
@@ -72,8 +72,7 @@
         <script language="VBScript">
             Set WshShell = CreateObject("Wscript.Shell")
 
-            Function CreateExo()
-                //WshShell.Run "cmd /c cd src/ &&  git clone https://github.com/youpiwaza/boilerplate-exercice && move boilerplate-exercice youpi-exercice && gulp generate-exercise"
+            Function VBCreateExo()
                 WshShell.Run "cmd /c cd src/ &&  git clone "&Document.getElementByID("git").Value&" && move boilerplate-exercice "&Document.getElementByID("dirname").Value&" && gulp generate-exercise"
             End Function
         </script>
@@ -86,49 +85,59 @@
 
             function generateDefaultContentConfigFile() 
             {
-                defaultConfig = defaultConfig.replace("%docs%", valuesDefault.docs);
-                defaultConfig = defaultConfig.replace("%git_repo%", valuesDefault.git_repo);
-                defaultConfig = defaultConfig.replace("%exo_name%", valuesDefault.exo_name);
-                defaultConfig = defaultConfig.replace("%exo_dirname%", valuesDefault.exo_dirname);
-                defaultConfig = defaultConfig.replace("%source%", valuesDefault.source);
-                defaultConfig = defaultConfig.replace("%step%",  valuesDefault.step);
+                newDefaultConfig = defaultConfig;
+                newDefaultConfig = newDefaultConfig.replace("%docs%", valuesDefault.docs);
+                newDefaultConfig = newDefaultConfig.replace("%git_repo%", valuesDefault.git_repo);
+                newDefaultConfig = newDefaultConfig.replace("%exo_name%", valuesDefault.exo_name);
+                newDefaultConfig = newDefaultConfig.replace("%exo_dirname%", valuesDefault.exo_dirname);
+                newDefaultConfig = newDefaultConfig.replace("%source%", valuesDefault.source);
+                newDefaultConfig = newDefaultConfig.replace("%step%",  valuesDefault.step);
                 
-                return defaultConfig;
+                return newDefaultConfig;
             }
 
             function generateContentConfigFile() 
             {
-                defaultConfig = defaultConfig.replace("%docs%", valuesDefault.docs);
-                defaultConfig = defaultConfig.replace("%git_repo%", document.getElementById('git').value);
-                defaultConfig = defaultConfig.replace("%exo_name%", document.getElementById('name').value);
-                defaultConfig = defaultConfig.replace("%exo_dirname%", document.getElementById('dirname').value);
-                defaultConfig = defaultConfig.replace("%source%", valuesDefault.source);
-                defaultConfig = defaultConfig.replace("%step%", document.getElementById('step').value);
+                newDefaultConfig = defaultConfig;
+                newDefaultConfig = newDefaultConfig.replace("%docs%", valuesDefault.docs);
+                newDefaultConfig = newDefaultConfig.replace("%git_repo%", document.getElementById('git').value);
+                newDefaultConfig = newDefaultConfig.replace("%exo_name%", document.getElementById('name').value);
+                newDefaultConfig = newDefaultConfig.replace("%exo_dirname%", document.getElementById('dirname').value);
+                newDefaultConfig = newDefaultConfig.replace("%source%", valuesDefault.source);
+                newDefaultConfig = newDefaultConfig.replace("%step%", document.getElementById('step').value);
                 
-                return defaultConfig;
+                return newDefaultConfig;
             }
 
             function createExo() 
             {
-                createConfig(generateContentConfigFile());
-                CreateExo();
+                if(createConfig(generateContentConfigFile())) {
+                    VBCreateExo();
+                }
             }
             function createDefaultExo() 
             {
-                createConfig(generateDefaultContentConfigFile());
-                CreateExo();
+                if(createConfig(generateDefaultContentConfigFile())) {
+                    VBCreateExo();
+                }                
             }
 
             function createConfig(content) {
                 var fs = new ActiveXObject("Scripting.FileSystemObject");
                 var configFile;
+                if( fs.FolderExists(current_directory+"\\src\\boilerplate-exercice")) {
+                    alert('Attention le dossier "src/boilerplate-exercice" existe déjà, vous devez soit le supprimer ou le renommer pour ne pas avoir de conflit avec l\'interface graphique.');
+                    return false;
+                } else {      
+                    if( fs.FileExists(current_directory+"\\gulp\\exercise\\config.js") === false) {
+                        fs.CreateTextFile(current_directory+"\\gulp\\exercise\\config.js", true);
+                    }
 
-                if( fs.FileExists(current_directory+"\\gulp\\exercise\\config.js") === false) {
-                    fs.CreateTextFile(current_directory+"\\gulp\\exercise\\config.js", true);
+                    configFile = fs.OpenTextFile(current_directory+"\\gulp\\exercise\\config.js", 2);
+   
+                    configFile.Write(content);
+                    return true;
                 }
-
-                configFile = fs.OpenTextFile(current_directory+"\\gulp\\exercise\\config.js", 2);
-                configFile.Write(content);
             }
             
             init();
