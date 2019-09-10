@@ -74,7 +74,7 @@
 
             Function CreateExo()
                 //WshShell.Run "cmd /c cd src/ &&  git clone https://github.com/youpiwaza/boilerplate-exercice && move boilerplate-exercice youpi-exercice && gulp generate-exercise"
-                WshShell.Run "cmd /c cd src/ &&  git clone https://github.com/youpiwaza/boilerplate-exercice && move boilerplate-exercice "&Document.getElementByID("dirname").Value&" && gulp generate-exercise"
+                WshShell.Run "cmd /c cd src/ &&  git clone "&Document.getElementByID("git").Value&" && move boilerplate-exercice "&Document.getElementByID("dirname").Value&" && gulp generate-exercise"
             End Function
         </script>
         <script>
