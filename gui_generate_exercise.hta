@@ -52,14 +52,13 @@
                 <input type="text" class="text" id="step" size="2" maxlength="2" value="1" />
             </p>
             <p>
-                <label class="priority" for="step">Repository Git (source)</label>
+                <label class="priority" for="git">Repository Git (source)</label>
                 <input type="text" class="text" id="git" style="width:460px" value="https://github.com/youpiwaza/boilerplate-exercice" />
             </p>
 
             <p style="text-align:center">
                 <button id="submit" onclick="createExo();">Générer l'exercice</button>
             </p>
-
 
         </form>
 
@@ -70,10 +69,10 @@
         </p>
 
         <script language="VBScript">
-            Set WshShell = CreateObject("Wscript.Shell")
+            Set WshShell =  CreateObject("Wscript.Shell")
 
             Function VBCreateExo()
-                WshShell.Run "cmd /c cd src/ &&  git clone "&Document.getElementByID("git").Value&" && move boilerplate-exercice "&Document.getElementByID("dirname").Value&" && gulp generate-exercise"
+                WshShell.Run "cmd /c gulp make-exercise",4,true
             End Function
         </script>
         <script>
@@ -125,8 +124,8 @@
             function createConfig(content) {
                 var fs = new ActiveXObject("Scripting.FileSystemObject");
                 var configFile;
-                if( fs.FolderExists(current_directory+"\\src\\boilerplate-exercice")) {
-                    alert('Attention le dossier "src/boilerplate-exercice" existe déjà, vous devez soit le supprimer ou le renommer pour ne pas avoir de conflit avec l\'interface graphique.');
+                if( fs.FolderExists(current_directory+"\\src\\"+document.getElementById('dirname').value)) {
+                    alert('Attention le dossier "src/'+document.getElementById('dirname').value+'" existe déjà, vous devez soit le supprimer ou le renommer pour ne pas avoir de conflit avec l\'interface graphique.');
                     return false;
                 } else {      
                     if( fs.FileExists(current_directory+"\\gulp\\exercise\\config.js") === false) {
