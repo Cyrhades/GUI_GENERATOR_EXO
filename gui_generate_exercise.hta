@@ -5,7 +5,7 @@
    BORDER=""
    ICON="favicon.ico"
    SHOWINTASKBAR="yes"
-   SINGLEINSTANCE="yes"
+   SINGLEINSTANCE="no"
    SYSMENU="yes"
    WINDOWSTATE="yes"
    SCROLL="no"
@@ -24,63 +24,312 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>GUI GENERATOR EXO</title>
-        <style>label.priority{margin-bottom:.3em;text-align:left; display:block;width:100%;}input.text{padding:.5em .6em; display:inline-block;border:1px solid grey;height:30px;width:300px;border-radius:4px;vertical-align:middle;box-sizing:border-box;}#step{width:50px;}#submit{background: #ff8d26;border: 5px solid #ff8d26;color:white;font-size:15pt;padding:8px 10px;margin:5px;white-space:normal;}</style>
+        <style>
+        body { margin :0; padding:0;}
+        label.priority{margin-bottom:.3em;text-align:left; display:block;width:100%;}input.text{padding:.5em .6em; display:inline-block;border:1px solid grey;height:30px;width:300px;border-radius:4px;vertical-align:middle;box-sizing:border-box;}#step{width:50px;}#submit{background: #ff8d26;border: 5px solid #ff8d26;color:white;font-size:15pt;padding:8px 10px;margin:5px;white-space:normal;}
+        #status_command{text-align :center; height: 70px; background-color: #ff8d26;}
+       
+        #menu { text-align:center; line-height:28px; height:30px; border-bottom : 3px solid #fdab28;}
+        #menu a { width : 30%; text-decoration: none;  color: #2D31A9; font-weight: bold;}
+        .tab {margin : 5px;}
+        #menu a.selected {color: #fff; background-color: #ff8d26;}
+
+        .icone{ width:48px; height:48px; }
+        .icone_gulp{ background: url('data:image/png;base64,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');}
+        .icone_node{ background:url('data:image/png;base64,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'); }
+        .icone_npm{ background:url('data:image/png;base64,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'); }
+        .icone_yarn{ background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAR6SURBVGhD1ZhrbAxRFMfPdrettlTbkHqVoiFejaWvtEQjBFGReCao9yPBB49IxBfxQXyU+IIG8SihUeKDoPoB9a5HEepLhTSIKG02lKKYc/fc7e7szM69d2ZLf8lmzp3d7Nz/Pefcc+a6/mhAFyaGrl2WqHngw5c2aPR9Z/bQ1ERITYhlttM4IgAnO/NULY2s8cS44NLiPEdEKQto//0H8g/dopE9atdOABfZsigJyCm7SZZzJMZ64MaKAhqJIyXgdUsrzKt4RKPocLU0Xyq0hAVEY9XNSEuIg6rSPBpFRkhAZ04+mAdablhhWQf+1eQRkWdH9IATk+er2Nb+G4oO32a2DEO0GlIxfxyNwjH1QP3HL2SpwyfvPVgD8e4YaJff8OBVcys0f/tJo3BMBZSeryPLHuhFt8sFWtmAx+smCsW1nqkn7pEVjmEIqYZOSrdYqF6aTyOAX9qsC4KKXeWC8TAoJYHZKs8wEh/mgR9arKqA7QFO/rkWejg5/ARPHplb8RAKFfIgEmECVB6AK3N3dREsOVcHyyxCT3WBkM1XXpDVgeU2asX9NX634oq/bBJPfJWErnnzmawOQgSo7Dxa5MCko3dpFH30O1KIANWdx9dmvs2ZgTuTCvodyXYIIWWzssmyppvHTZYz2Baw+fILyO3Xk0bWXFsu3zJHIiBAPqX87J0+kl1FkxK32ynHzQuTLAEBdxqbyRKHFy3cgURievfk4eza8l0+Z4LBV1hOQIDMFojgimPlFa2o+PtpWb1ZX2QXfliAKOcA9jUycA9hd+kkAQE5EonIEV19Dv4e+yGVIhZMJvVTSEDAqN49yLLG7gRkvaenV2IcWUEC3FhSOwEnciAYpRyws4I8F4amJbErB7260psBOyZm0R0xpAXw8JGNfz0bcgexa1Kch3WzuCjrtXtzRvSReukJEbBvxiiyzKnVus8bBl2hLD1o4te1ytzU+oMtCP8gO4uHsauei4tyyfITIqAwI5Usc7CSbjHoy2Xx9k2GJx98bMLTy+/T3Q4PH61rZFc96d3jyfKjlAP6+JVl4dnHbOKrLjylO8BOHngoYaV+0/KNvulgeK/w54a9E/vafsHkY+b9/ZLs/rCpYHDA1XbBFeebAgpr+PyV2UYY5UaYB5LjPWQZU/70Lbvq/wy9wt0vCl/xPTUNbEEiTd4MwxAyUqrnJAnhnJnnFWroNuZlsv/HD5754MQr69/Tt+aYzcn0ZK76VRNsr35Jo1By+6XA/pLRzP76sx2SYv0vKVikgkWgR3CMv99WNCTQB+EuJrMRnNYWJ8sk72wdLca5Y2DF2AFQ/uwdFGemwS6TrQ/B4xarEwsj0GPLtWeYEVEA4lSyqmIVzpbbqEg+RAuRZ1t6gIOnbHhU2BmsGTcQ1uUMpFFkhAUgkRLbKY7Mzobs9GQaWSMlgBOtvFAJVyUBHKzYWLntkJ4UDxcXhzZoMtgSwLn++hNsraqnkRgHSsYovcbqcUSAHjyBxmOaBq3SIhjT3j7JUXnri4qAzkSpnf5/APgLzPHQe0pwS/MAAAAASUVORK5CYII='); }
+        .icone_git{ background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAL5SURBVGhD1Zi9jlJBFMeHSwIYii0teAMqio2PoB1mtzdRE4wmbGNnYjRUVnSGFzAUNFrTWq7GQmPiC5hgYbK7iHy4gJzLGRjmDnfmzMfd8Etu7pnhXub/n3Nmht3ccgU7YCK8HyzeMvDnxWM2//EVW4wdffiMUVi8ZEAWD1ye3sEoLM4ZuDw5xkhN6Ew4ZQBmXofOoCvBMxCTi9jR+3Ns+MUqA6JooxJZLoJlgmyAlw3ZxIoQJkgG5N3GyoTn3cl4DaTNnkq8brZ97U5GGdDtNiqxOoG+yklrQHVIydw6e40RDR/llFpClFmyKSOOSzntzYDJISUyfHofoy2mwlzKSWnApGxkFr9+YsTY6OUTjAgmLMspYQBmgypehTirRiYsD7sdA9Sy0SGb4FcaVBMbA8uL315mXkYlSGdi9OoZRno2Bq4e3cPo5rn+9gkjPRsDpQdNjA6LjYHi6UOM/APlScFo0SOJg8xmJ+DwgWEbvf7+JY53WP1dALtNGhTxwCYDHOoXkPAsHkgYAIKa2IPtmMF+C7m8S0GZAY7pF0e3KxhtMX3XRTyQagAwGaBw9wQjGq7iAa0BQDfQ5N1bjLb8ffMcIzU+xANGBgDdgGLNL68u2L/zj9hK4ks8QP6/kMs5AfgUDxhngOMiwLd4gGwAsBGieyeXy8UXFSsDAMWE7cybGLI2AJgIMxUPS1Fcjp1OB6N0yItYxb6FLYuvVCpsMBiwVqvFqtVq3Fev11mxWIxjYD6fK2e+UCiw6XSKrS1eDACyCVE8CJzNZtjaZTQasXK5jK11JigG4IXgwDDiUL1eL24Ph0PsST4jt/fhtAZsqdVq8b3RaMR3F7yVUBpiSZRKJTaZTOJYHJo/w/vk9j4yyYAogotX1rMFmRjgs9ntdtl4PI4NwaI0Ad7ll4rMS0gGhpc/h77FYsHy+Tz2rFFJzXQRt9ttdnycPDNAmHgBURQp+xOsPggODNPv97G1Bvp8DJ+ZAdXVbDbxCXsyWQMhuZGDzB+M/QdaOm4WAON/kQAAAABJRU5ErkJggg=='); }
+        .icone_php{ background: url('data:image/png;base64,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')}
+        .icone_symfony{ background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxMAAAsTAQCanBgAAAQaSURBVGhD7Zi9SxxBFMDnBEHBKxREEPSMosa/QfCCIAgiaGch0VJzsTMgVlZiJHoRkkLFjwgatBKxU/xoTKGglhYWChL1ooVYiCCbfe/eeLPr7O7s3J5RyA8eM++9mTfzdnZndjdkmLBXTBaVgbC7u8tCoZCjdHZ2UsvgCGQFYHJ+ub6+Zvn5+aTpk9YKtLS0aE0eKCgo0O4ror0CQQzOKS0tZScnJ6T5Q2sFgpw8cHp6yhoaGkjzCayAH6BLpqS7u5tGUcdXArJB/Uoi8QdjfRkZwRIQ/WNjY2RVQzkBcRBd4dj19x0d0nYqPFsCHJktLy/PYm9sbCSPN0q7ULoP7dXVFW6bgGoshWkhgZ3EMCCXnJwcsibhk//27TuWKrS3t1PNA3NAVwYHBy3La5fPw8PUEi8ZyurqqnFxcYn1tzU15E35QZJ6yGKziwqerWSBReHkhcOOPo7d19v7yWKziwqBJQCo+uPxrxbdSVQINIEPsZjFF4t9JE+Su7s7Y3//wNLGTebn56mnM4EmAJSVvZH6Omx7vYo0NzdTb2e0EtjZ+WXx2ZHZuc2PQNJeaCXAWVj4+cQGuNn8yOLiIvV2xvMgkx08vIvoE8OAHT5W4KOFo3MYekwNSet1enb2B5ZNTU1YAtxnPqxYArrv+krACrgRj8dxOZ3k8PDQ+H1+bkQiZRa7iGj3IyootZIF9xIRmd9Ltre3qbc7GU9g/0B93xdFFeWWskGcJBp9R730km9ra6Pe3ih/1DvtImJ33obbdHYeQHFKiPIupBr07OwMy+eYPOBrG3ULDhMGf3FxsfbkBwYGqKaO1n8h3Qm68fDwwLKy/B9LWgeZRs6uwCenzuQBvV4mkERXVxdp+kAc/smpBdxC6QKfkBBKVYqKiqhn+gSSgMjGxoZhftQ/mbS5WtQiWLR/7r4UtJ+Bl8L/BP41jgnAYQVSUVFBFn14rEwgTQAGg2cb5Pj4mKx6RKPRx1iZQOkWur29pVqSm5sbPD3Hx8dRr6ysZHNzc1hvbW1l9fX1WJ+ammJHR0dsenqaTUxMoG1vb48VFhaylZUV1IHJyUksYbX7+vqwDn1FlpaWqGbDvDJSwGW+mJGW1Dm8DqU5+cc6t9/f3xvhcBjr1dXVWALgX19fx/rlZfLfKQAlPyeGhoaMnp4eY2tr69EPiHURuZWABMRBODLb5uamsby8TFrKV1VVhSUgtgdkcQC7PRKJGOatjHU7rrcQf7cHYJnr6urYzMwMRCVrCrDV1taSFizwV6O8vJw0G5iGC2ITqNt1DrxCJBIJ0lK+dFYAGB0dNbKzs0l7irUnAQG4iNhtYn1tbQ3vfQ73lZSUYMnhMZziAPz5Aew+O77ehfj2+px4jal8EkOg3Nxc0jJPf3+/0gV75W+jjP0FGbN9ZuKbh0IAAAAASUVORK5CYII='); }
+        .icone_docker{ background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAARUSURBVGhD7ZhtbFNVGMf/fVlf9mbXjXWAGKMJmYs6pwI6FwjEQKKGiBq/+MFvGOWDBj4Z/coHEkKIkYCfyBI0JhCJMfEthEAWNGOAjJcpjMgytylr13Vr1/XlrvU8p6ftbXu33nt7u65hv+Su5zm3vff8d57nPM85piQDVcyyC7j477xoZTGZTNja5hCWNszic1npcNkyV0ONGaX8DysiYI3TkrnsFpPo1UdFBBhJ1QswLIiHAnF45yVhaWfbWqdoaYQEGMEtfzR5YSIsrBRkT4YlYaXI/47S77RQFS40PBNHZEHZUVa8gAQb90RYQv9kBPMKIjTHwJyUwEiw0NeD8QSi7AUtDovoAXyRBb7Oy5dK6pN/J/93lNQ6XDW8Tdz0R+GPJoRVGCuaBdyejvFBlBP5IPMzt8dpRbtMoG4B+S+hrEqJKQ31yb+j93f5Agj5/arMAyQqfT08iUxpKlcCJQn48JJPtLLsbW9EV7NNWOWnZBfa296A46+08CuFpjWhJLo9zuqLgXqWV15osfOViDWrS8DmVgcfPIlIs2QMdJz5R7TUQy7V1WwXlnE0s0z9dFNhbBWdgaMvNWPonQ0499pabuf7/L6OR/j9a3se5XY5sJhNioMnVLvQulqraOXicaQe4SiyNYyzquy6LyYsbfR4Ft/wlxwDY3MSqEikz6X4+JIXX92ZxTVvVPSoQ142KJETA3p8vhiUFzrdNuz7zYcjW9zY3++XLbmLQ/O5tcjgiYIZSPs8XUr258+5cmIgPyaU8gLbdfGW02pGKwvGY0MBDPpjkFXJOTTYLKoGT2h2IarbXfZs9aiGOlv2Nbs21OLWtIQTf87ik999PJsP+LJuRSvY8xoyua4YIJegulwtVrZJSdPdas/M0OHNbt43GV5AW62F+3ujTKwaMjFQDv+X896T9eiRHR+evBvEZRbQm9bY0LvNI3q1kyMg7edaCUlJ3JiK8qVyKejuR7IC8NsdHjzLZrMUDBGQD22+I0wUPZjFLerYH0oTPT+MsT018IeBSS/H4W6ylcEInGy0TXYz3OxqZHULDf7reyG2OU/iypvGZuyMADo5+PL2jLBSdJ0d4zPzQZ9X9Ojj3mwcB69P44uXW7gYI8kI+LTThb4HEWGloOMOYnxe/ynE32zwu3/9D+8+UY9X16tb2zVBMZDmqdOjyVPDQWGlOD+u/9jvu/sh/szPBqZEj/HkCOi9O8tfGJESokc/O3+a4M/6fiQkespDwX5g58/jGAsl0PfGOl6Da+XQYAC9w0GYEglcffuxolVqqRQIIN6/+AAD3hiecdfgm+1tRQPvzkwcB/qnuL8TB190Y8/jdbxdbhQFEKMhCa//Ms5K5VScO6xJdDY5WKFlxkxsAX8FJH6umcbO7p/obsUWtu1bThYVIOfsyBx+HA1jMBBDOC6h0WLGRpcd3aw0eIv9p+WHtcuNKgErmZxMXI2sCqg0qwIqzaqAygL8DzQN0fD2wHyiAAAAAElFTkSuQmCC'); }
+        
+        .logo-cmd{ width:48px; height:65px; margin : 0 10px 0 10px; border : 3px solid #ff8d26;}
+        .logo-cmd.exists { border-bottom : 15px solid #fdab28;}
+        .logo-cmd.notexists { filter: alpha(opacity=50); opacity: 0.50; border-bottom : 15px solid rgb(223, 48, 17);}       
+
+        #tab_help { margin-top : 50px; background:#ff8d26; }
+        #tab_help table tr td {font-weight: bold; padding-left: 5px; border : 3px solid #fdab28; color:#fff;}
+        #tab_help table tr td a { color: #222; font-weight: bold;}
+        #list_exos{ margin:3px;}
+        .folder_exo {margin:3px; font-weight: bold;  padding: 5px; background:#fdab28; color:#fff; cursor:pointer; }
+        .folder_exo.selected { background:#ff8d26; }
+        </style>
     </head>
     <body>
-        <form>
-            <p>
-                <label class="priority">Les différents énnoncés</label>
-                <input type="checkbox" id="doc_easy" checked="checked" disabled />
-                <label for="doc_easy">Facile</label>
-                
-                <input type="checkbox" id="doc_medium" checked="checked" disabled />
-                <label for="doc_medium">Intermediaire</label>
+        <div id="status_command"></div>
+        <div id="menu"></div>
+        <div id="tab_create_exercice" class="tab">
+            <form>
+                <p>
+                    <label class="priority">Les différents énnoncés</label>
+                    <input type="checkbox" id="doc_easy" checked="checked" disabled />
+                    <label for="doc_easy">Facile</label>
+                    
+                    <input type="checkbox" id="doc_medium" checked="checked" disabled />
+                    <label for="doc_medium">Intermediaire</label>
 
-                <input type="checkbox" id="doc_hard" checked="checked" disabled />
-                <label for="doc_hard">Difficile</label>
-            </p>
-            <p>
-                <label class="priority" for="name">Nom de l'exercice</label>
-                <input type="text" class="text" id="name" />
-            </p>
-            <p>
-                <label class="priority" for="dirname">Nom du répertoire</label>
-                <input type="text" class="text" id="dirname" /><small> (sera stocké dans ./src)</small>
-            </p>
-            <p>
-                <label class="priority" for="step">Nombre d'étape dans l'exercice</label>
-                <input type="text" class="text" id="step" size="2" maxlength="2" value="1" />
-            </p>
-            <p>
-                <label class="priority" for="git">Repository Git (source)</label>
-                <input type="text" class="text" id="git" style="width:460px" value="https://github.com/youpiwaza/boilerplate-exercice" />
-            </p>
+                    <input type="checkbox" id="doc_hard" checked="checked" disabled />
+                    <label for="doc_hard">Difficile</label>
+                </p>
+                <p>
+                    <label class="priority" for="name">Nom de l'exercice</label>
+                    <input type="text" class="text" id="name" />
+                </p>
+                <p>
+                    <label class="priority" for="dirname">Nom du répertoire</label>
+                    <input type="text" class="text" id="dirname" /><small> (sera stocké dans ./src)</small>
+                </p>
+                <p>
+                    <label class="priority" for="step">Nombre d'étape dans l'exercice</label>
+                    <input type="text" class="text" id="step" size="2" maxlength="2" value="1" />
+                </p>
+                <p>
+                    <label class="priority" for="git">Repository Git (source)</label>
+                    <input type="text" class="text" id="git" style="width:460px" value="https://github.com/youpiwaza/boilerplate-exercice" />
+                </p>
 
+                <p style="text-align:center">
+                    <button id="submit" onclick="createExo();">Générer l'exercice</button>
+                </p>
+            </form>
+            <hr />
             <p style="text-align:center">
-                <button id="submit" onclick="createExo();">Générer l'exercice</button>
+                <button id="submit" onclick="createDefaultExo();">Regénérer l'exercice par défaut</button>
+            </p>        
+        </div>
+
+        <div id="tab_work_exercice" class="tab" style="display:none;">
+            <p>
+                <label for="list_exos">Liste des exercices</label>
+                <div id="list_exos"></div>
+            </p>
+            <p>
+                <input type="checkbox" id="start_server_with_php" disabled />
+                <label style="color:grey" for="start_server_with_php">Démarrer un serveur web avec PHP</label>
+            </p>
+            <p>
+                <input type="checkbox" id="https" disabled />
+                <label style="color:grey" for="https">activer le HTTPS</label>
+            </p>
+            <p>
+                <input type="checkbox" id="mysql" disabled />
+                <label style="color:grey" for="mysql">Démarrer un conteneur Mysql avec Docker</label>
+            </p>
+            <p style="text-align:center">
+                <button id="submit" onclick="watchExo();">Voir l'exercice</button>
             </p>
 
-        </form>
+            <hr>
 
-        <hr />
+            <p>
+                <label class="priority" for="git_dest">Repository Git (destination)</label>
+                <input type="text" class="text" id="git_dest" style="width:460px" value="" />
+            </p>
+            <p style="text-align:center">
+                <button id="submit" onclick="commitExo();">Commit exercice</button>
+            </p>
+        </div>
 
-        <p style="text-align:center">
-            <button id="submit" onclick="createDefaultExo();">Regénérer l'exercice par défaut</button>
-        </p>
+        <div id="tab_help" class="tab" style="display:none;">
+            <table>
+                <tr>
+                    <td><span class="icone icone_node"></span></td>
+                    <td>Pour installer nodeJs : 
+                        <a href="https://nodejs.org/dist/v10.16.3/node-v10.16.3-x64.msi">Télécharger</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="icone icone_npm"></span></td>
+                    <td>NPM sera installé avec nodeJS</td>
+                </tr>
+                <tr>
+                    <td><span class="icone icone_gulp"></span></td>
+                    <td>
+                        Installer Gulp
+                        <a href="javascript:install('npm install gulp-cli -g')">Installer gulp</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="icone icone_yarn"></span></td>
+                    <td>
+                        Installer Yarn
+                        <a href="https://yarnpkg.com/latest.msi">Télécharger</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="icone icone_git"></span></td>
+                    <td>
+                        Installer Docker
+                        <a href="https://git-scm.com/download/win">Télécharger</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="icone icone_php"></span></td>
+                    <td>
+                       Vous devez installer PHP en CLI (le dossier PHP doit être déclarée dans la variable d'environnement "path")
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="icone icone_symfony"></span></td>
+                    <td>
+                        Installer Symfony
+                        <a href="https://get.symfony.com/cli/setup.exe">Télécharger</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="icone icone_docker"></span></td>
+                    <td>
+                        Installer Docker
+                        <a href="https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe">Télécharger</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
         <script language="VBScript">
+            // https://vb.developpez.com/faq/vbs?page=Shell-wshShell
             Set WshShell =  CreateObject("Wscript.Shell")
 
-            Function VBCreateExo()
-                WshShell.Run "cmd /c gulp make-exercise",4,true
+            Function VerifyCmdExists(cmd, arg)
+                    On Error Resume Next 'Ceci ignore toute les erreurs
+
+                    Return = WshShell.Run(cmd&" "&arg , 0, true)  
+
+                    If Return = "" Then
+                        VerifyCmdExists = false
+                    Else
+                        VerifyCmdExists = true
+                    End If
             End Function
+
+            Function List(directory, currentExo)
+                Set subfolders = CreateObject("Scripting.FileSystemObject").GetFolder(directory).SubFolders
+                options = ""
+                for each objFolder in subfolders
+                    If currentExo = objFolder.Name Then
+                        options = options & "<span class='folder_exo selected' onclick='javascript:selectExo(this);'>" & objFolder.Name & "</span>"
+                    Else
+                        options = options & "<span class='folder_exo' onclick='javascript:selectExo(this);'>" & objFolder.Name & "</span>"
+                    End If
+                next
+                List = options
+            End Function
+
+
+            Function VBCreateExo()
+
+                WshShell.Run "cmd /c cd src/ &  git clone "&Document.getElementByID("git").Value&" & move boilerplate-exercice "&Document.getElementByID("dirname").Value&" & gulp generate-exercise & cd "&Document.getElementByID("dirname").Value&" & npm install"
+                
+                ' En attendant la correction du make-exercice pour avoir plusieurs exercices
+                ' WshShell.Run "cmd /c gulp make-exercise",4,true
+            End Function
+
+            Function VBWatchExo(currentExo)
+                WshShell.Run "cmd /k cd src/"&currentExo&" & gulp watch",4,true
+            End Function
+
+            Function VBCommitExo(currentExo,gitDist)
+                WshShell.Run "cmd /k cd src/"&currentExo&" & git remote rm origin & git remote add origin "&gitDist&" & git push -u origin master",4,true
+            End Function
+
         </script>
-        <script>
+
+        <script type="text/javascript">
+            var currentExo;
+             // Liste des Commandes qui doivent être disponible
+            var installCmd = { 
+                node : false, npm : false, yarn : false, php : false,
+                git : false, gulp : false, symfony : false, docker : false
+            };
             var valuesDefault = { docs : "['enonce-easy', 'enonce-medium', 'enonce-hard']", git_repo : 'https://github.com/youpiwaza/boilerplate-exercice', exo_name : 'TEST-table-multiplication', exo_dirname : 'boilerplate-exercice', source : './src/', step : 7};
             var defaultConfig = "// // Configuration file, may export several configurations\nconst configExoTest = {\n  // .md filenames from which to generate folders\n  // correction will be generated automatically with ExercisePath/docs/correction.md AND git branches 'correction'\n  docs: %docs%,\n  // Exercise git repository uri\n  repoUri: '%git_repo%',\n  // Export name\n  name: '%exo_name%',\n  // Folder name in src/ ; going to work on /src/ExercisePath/src/\n  path: '%exo_dirname%',\n  // Where to clone repo, needs './' prefix\n  src: '%source%',\n  // Number of steps in step-by-step correction, must match ExercisePath/docs AND git branches 'step-*'\n  // Last step will be generated with the correction\n  steps: %step%,\n};\n\n\nmodule.exports = {\n  configExoTest,\n};\n"
             var current_directory = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('\\'));
             //var current_directory = G²E.commandLine.substring(0, G²E.commandLine.lastIndexOf('\\'));
-            function init(){window.resizeTo(500,640);window.moveTo(300,150);}
+            
+            function init()
+            {
+                window.resizeTo(640, 740);
+                window.moveTo(300,150);
+
+                createMenu();
+                createListExos();
+                createStatusCommandBar();  
+            }
+
+            function createListExos() {
+                document.getElementById('list_exos').innerHTML = List("./src/", currentExo);
+            }
+
+            function selectExo(exo) {
+                currentExo = exo.innerHTML;
+                createListExos();
+            }
+
+            function watchExo() {
+                if(currentExo == null) {
+                    alert("vous devez choisir un exercice !");
+                    return false;
+                }
+                VBWatchExo(currentExo)
+            }
+
+            function commitExo() {
+                if(currentExo == null) {
+                    alert("vous devez choisir un exercice !");
+                    return false;
+                }
+                if(document.getElementById('git_dest').value == "") {
+                    alert("vous devez préciser l'url de votre git !");
+                    return false;
+                }
+                VBCommitExo(currentExo, document.getElementById('git_dest').value)
+            }
+
+            function createStatusCommandBar() 
+            {
+                // On vérifie que toute les installation nécessaire sont là !
+                if(VerifyCmdExists('node','-v')) installCmd.node = true;
+                if(VerifyCmdExists('npm','-v')) installCmd.npm = true;
+                if(VerifyCmdExists('yarn','-v')) installCmd.yarn = true;
+                if(VerifyCmdExists('gulp','-v')) installCmd.gulp = true;
+                if(VerifyCmdExists('git','--version')) installCmd.git = true;
+                if(VerifyCmdExists('php','-v')) installCmd.php = true;
+                if(VerifyCmdExists('symfony','-v')) installCmd.symfony = true;
+                if(VerifyCmdExists('docker','-v')) installCmd.docker = true;
+
+                document.getElementById('status_command').innerHTML = 
+                    '<span class="icone icone_node logo-cmd '+(installCmd.node?'':'not')+'exists"></span>'+
+                    '<span class="icone icone_npm logo-cmd '+(installCmd.npm?'':'not')+'exists"></span>'+
+                    '<span class="icone icone_gulp logo-cmd '+(installCmd.gulp?'':'not')+'exists"></span>'+
+                    '<span class="icone icone_yarn logo-cmd '+(installCmd.yarn?'':'not')+'exists"></span>'+
+                    '<span class="icone icone_git logo-cmd '+(installCmd.git?'':'not')+'exists"></span>'+
+                    '<span class="icone icone_php logo-cmd '+(installCmd.php?'':'not')+'exists"></span>'+
+                    '<span class="icone icone_symfony logo-cmd '+(installCmd.symfony?'':'not')+'exists"></span>'+
+                    '<span class="icone icone_docker logo-cmd '+(installCmd.docker?'':'not')+'exists"></span>';
+            }
+  
+            function changeTab(nameTab) 
+            {
+                var tabs = ['tab_create_exercice', 'tab_work_exercice', 'tab_help'];
+                for(var i = 0; i < tabs.length; i++) {
+                    document.getElementById(tabs[i]).style.display = "none"; 
+                    document.getElementById('btn_'+tabs[i]).className = "";
+                }
+                document.getElementById(nameTab).style.display = "block"; 
+                document.getElementById('btn_'+nameTab).className = "selected";
+                
+                if(nameTab == 'tab_work_exercice') createListExos();
+            }
+
+            function createMenu() 
+            {
+                document.getElementById('menu').innerHTML = 
+                    '<a href="#" id="btn_tab_create_exercice" onclick="javascript:changeTab(\'tab_create_exercice\');" class="selected">Créer un exercice</a>'+
+                    '<a href="#" id="btn_tab_work_exercice" onclick="javascript:changeTab(\'tab_work_exercice\');">Travailler sur un exercice</a>'+
+                    '<a href="#" id="btn_tab_help" onclick="javascript:changeTab(\'tab_help\');">Aide installation</a>'
+                ;
+            }
 
             function generateDefaultContentConfigFile() 
             {
@@ -114,17 +363,23 @@
                     VBCreateExo();
                 }
             }
+
             function createDefaultExo() 
             {
-                if(createConfig(generateDefaultContentConfigFile())) {
+                if(createConfig(generateDefaultContentConfigFile(), 'default')) {
                     VBCreateExo();
                 }                
             }
 
-            function createConfig(content) {
+            function createConfig(content, type) 
+            {
+                if(type != 'default' && (document.getElementById('dirname').value == "" || document.getElementById('dirname').value == "") ) {
+                    alert("Vous devez renseigner les champs \"nom de l'exercice\" et \"nom du répertoire\".");
+                    return false;
+                }
                 var fs = new ActiveXObject("Scripting.FileSystemObject");
                 var configFile;
-                if( fs.FolderExists(current_directory+"\\src\\"+document.getElementById('dirname').value)) {
+                if(type != 'default' && fs.FolderExists(current_directory+"\\src\\"+document.getElementById('dirname').value)) {
                     alert('Attention le dossier "src/'+document.getElementById('dirname').value+'" existe déjà, vous devez soit le supprimer ou le renommer pour ne pas avoir de conflit avec l\'interface graphique.');
                     return false;
                 } else {      
