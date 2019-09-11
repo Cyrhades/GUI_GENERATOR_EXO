@@ -204,16 +204,21 @@
             End Function
 
             Function List(directory, currentExo)
-                Set subfolders = CreateObject("Scripting.FileSystemObject").GetFolder(directory).SubFolders
-                options = ""
-                for each objFolder in subfolders
-                    If currentExo = objFolder.Name Then
-                        options = options & "<span class='folder_exo selected' onclick='javascript:selectExo(this);'>" & objFolder.Name & "</span>"
+                Set fs = CreateObject("Scripting.FileSystemObject")
+                If fs.FolderExists(directory) Then
+                    Set subfolders = fs.GetFolder(directory).SubFolders
+                    options = ""
+                    for each objFolder in subfolders
+                        If currentExo = objFolder.Name Then
+                            options = options & "<span class='folder_exo selected' onclick='javascript:selectExo(this);'>" & objFolder.Name & "</span>"
+                        Else
+                            options = options & "<span class='folder_exo' onclick='javascript:selectExo(this);'>" & objFolder.Name & "</span>"
+                        End If
+                    next
+                    List = options
                     Else
-                        options = options & "<span class='folder_exo' onclick='javascript:selectExo(this);'>" & objFolder.Name & "</span>"
-                    End If
-                next
-                List = options
+                    List = "Dossier '<strong>src/</strong>' inexistant !"
+                End If
             End Function
 
 
