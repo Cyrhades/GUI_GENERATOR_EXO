@@ -124,10 +124,17 @@
 
             <p>
                 <label class="priority" for="git_dest">Repository Git (destination)</label>
-                <input type="text" class="text" id="git_dest" style="width:460px" value="" />
+                <input type="text" class="text" id="git_dest" style="width:560px" value="" />
+            </p>
+            <p>
+                <label class="priority" for="git_comment">Commentaire sur commit</label>
+                <input type="text" class="text" id="git_comment" style="width:560px" value="Commit depuis l'interface graphique" />
+            </p>
+            <p id="branch_git">
+                
             </p>
             <p style="text-align:center">
-                <button id="submit" onclick="commitExo();">Commit exercice</button>
+                <button id="submit" onclick="commitExo();">Commit & Push exercice</button>
             </p>
         </div>
 
@@ -194,7 +201,7 @@
             Function VerifyCmdExists(cmd, arg)
                     On Error Resume Next 'Ceci ignore toute les erreurs
 
-                    Return = WshShell.Run(cmd&" "&arg , 0, true)  
+                    Return = WshShell.Run("cmd /c cd ../ & "&cmd&" "&arg , 0, true)  
 
                     If Return = "" Then
                         VerifyCmdExists = false
@@ -234,8 +241,8 @@
                 WshShell.Run "cmd /k cd src/"&currentExo&" & gulp watch",4,true
             End Function
 
-            Function VBCommitExo(currentExo,gitDist)
-                WshShell.Run "cmd /k cd src/"&currentExo&" & git remote rm origin & git remote add origin "&gitDist&" & git push -u origin master",4,true
+            Function VBCommitExo(currentExo,gitDist,gitComment)
+                WshShell.Run "cmd /k cd src/"&currentExo&" & git add . & git commit -m """&gitComment&""" & git remote rm origin & git remote add origin "&gitDist&" & git push -u origin master",4,true
             End Function
 
         </script>
@@ -288,7 +295,7 @@
                     alert("vous devez préciser l'url de votre git !");
                     return false;
                 }
-                VBCommitExo(currentExo, document.getElementById('git_dest').value)
+                VBCommitExo(currentExo, document.getElementById('git_dest').value, document.getElementById('git_comment').value)
             }
 
             function createStatusCommandBar() 
