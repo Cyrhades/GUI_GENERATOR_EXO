@@ -105,12 +105,12 @@
                 <div id="list_exos"></div>
             </p>
             <p>
-                <input type="checkbox" id="start_server_with_php" disabled />
-                <label style="color:grey" for="start_server_with_php">Démarrer un serveur web avec PHP</label>
+                <input type="checkbox" id="start_server_with_php" value="1" />
+                <label for="start_server_with_php">Démarrer un serveur web avec PHP</label>
             </p>
             <p>
-                <input type="checkbox" id="https" disabled />
-                <label style="color:grey" for="https">activer le HTTPS</label>
+                <input type="checkbox" id="https" value="1" />
+                <label for="https">activer le HTTPS</label>
             </p>
             <p>
                 <input type="checkbox" id="mysql" disabled />
@@ -241,6 +241,15 @@
                 WshShell.Run "cmd /k cd src/"&currentExo&" & gulp watch",4,true
             End Function
 
+            Function VBStartHttps()
+                WshShell.Run "cmd /c cd src/"&currentExo&"/src & symfony server:ca:install",4,true
+            End Function
+
+            Function VBStartServerPHP()
+                WshShell.Run "cmd /k cd src/"&currentExo&"/src & symfony server:start",4,true
+            End Function
+
+            
             Function VBCommitExo(currentExo,gitDist,gitComment)
                 WshShell.Run "cmd /k cd src/"&currentExo&" & git add . & git commit -m """&gitComment&""" & git remote rm origin & git remote add origin "&gitDist&" & git push -u origin master",4,true
             End Function
@@ -283,7 +292,19 @@
                     alert("vous devez choisir un exercice !");
                     return false;
                 }
-                VBWatchExo(currentExo)
+                if(document.getElementById('start_server_with_php').checked == true) {
+                    if(installCmd.symfony == true) {
+                        if(document.getElementById('https').checked == true) {
+                            VBStartHttps();
+                        }   
+                        VBStartServerPHP();
+                    } else {
+                        alert("Vous devez avoir installé le client symfony pour démarrer un serveur PHP !");
+                    }
+                }
+                else {
+                    VBWatchExo(currentExo)
+                }
             }
 
             function commitExo() {
@@ -295,7 +316,11 @@
                     alert("vous devez préciser l'url de votre git !");
                     return false;
                 }
-                VBCommitExo(currentExo, document.getElementById('git_dest').value, document.getElementById('git_comment').value)
+                if(installCmd.symfony == true) {
+                    VBCommitExo(currentExo, document.getElementById('git_dest').value, document.getElementById('git_comment').value)
+                } else {
+                    alert("Vous devez avoir installé git pour commit et push votre exercice !");
+                }
             }
 
             function createStatusCommandBar() 
